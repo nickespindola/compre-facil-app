@@ -14,7 +14,7 @@ docker compose up -d
 ### 2. Crie a tabela de pagamentos no Postgres
 Acesse o container do Postgres:
 ```zshe
-docker exec -it <nome_do_container_postgres> psql -U payment_user -d payment_db
+docker exec -it compre_facil_app-postgres-1 psql -U payment_user -d payment_db
 ```
 Execute o script:
 ```sql
