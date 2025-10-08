@@ -8,7 +8,7 @@ Este projeto contém dois microsserviços independentes:
 
 ### 1. Suba os serviços de infraestrutura
 ```zsh
-docker-compose up -d
+docker compose up -d
 ```
 
 ### 2. Crie a tabela de pagamentos no Postgres
