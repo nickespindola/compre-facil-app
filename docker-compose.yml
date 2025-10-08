@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: payment_user
+      POSTGRES_PASSWORD: payment_pass
+      POSTGRES_DB: payment_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbit
+      RABBITMQ_DEFAULT_PASS: rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  payment-service:
+    build: ./payment-service
+    container_name: payment_service
+    working_dir: /app
+    volumes:
+      - ./payment-service:/app
+    command: bash -lc "npm install && npm start"
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  notification-service:
+    build: ./notification-service
+    container_name: notification_service
+    working_dir: /app
+    volumes:
+      - ./notification-service:/app
+    command: bash -lc "npm install && npm start"
+    ports:
+      - "3002:3002"
+    depends_on:
+      - rabbitmq
+
+volumes:
+  pgdata:
